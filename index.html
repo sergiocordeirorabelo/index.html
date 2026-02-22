@@ -1,43 +1,1256 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Plataforma Financeira</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmpregaAI — Seu primeiro emprego começa aqui</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f5f0e8;
+  --bg2: #ede8df;
+  --ink: #1a1208;
+  --ink2: #4a3f2f;
+  --muted: #9a8e7e;
+  --accent: #e8521a;
+  --accent2: #2d6a4f;
+  --accent3: #f4a935;
+  --white: #fdfaf5;
+  --border: #d4cdc0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; overflow-x:hidden; }
+
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(232,82,26,.06) 0%, transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(244,169,53,.08) 0%, transparent 50%);
+  pointer-events:none; z-index:0;
+}
+
+/* ══ NAV ══ */
+nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 48px;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+}
+.logo { font-family:'Fraunces',serif; font-size:22px; font-weight:900; }
+.logo span { color:var(--accent); }
+.nav-cta {
+  background:var(--accent); color:white; padding:10px 24px;
+  border-radius:100px; font-size:14px; font-weight:700;
+  border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .2s;
+}
+.nav-cta:hover { background:#d4441a; transform:translateY(-1px); }
+
+/* ══ HERO ══ */
+.hero {
+  display:grid; grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 61px);
+  position:relative; z-index:1;
+}
+.hero-left {
+  padding:80px 64px;
+  display:flex; flex-direction:column; justify-content:center;
+  animation:fadeLeft .8s ease both;
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent3); color:var(--ink);
+  padding:6px 16px; border-radius:100px;
+  font-size:13px; font-weight:700; width:fit-content; margin-bottom:28px;
+}
+.hero-tag::before {
+  content:''; width:8px; height:8px; background:var(--ink);
+  border-radius:50%; animation:pulse 2s infinite;
+}
+h1 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(44px,5vw,72px);
+  font-weight:900; line-height:1.05;
+  letter-spacing:-2px; margin-bottom:24px;
+}
+h1 em { font-style:italic; color:var(--accent); }
+.hero-sub {
+  font-size:17px; color:var(--ink2); line-height:1.7;
+  max-width:440px; margin-bottom:40px;
+}
+.btn-hero {
+  background:var(--ink); color:white;
+  padding:18px 40px; border-radius:100px;
+  font-size:17px; font-weight:700; border:none;
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .2s; width:fit-content;
+  display:flex; align-items:center; gap:10px;
+}
+.btn-hero:hover { background:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,82,26,.3); }
+.hero-note { font-size:13px; color:var(--muted); margin-top:14px; }
+
+.hero-stats { display:flex; gap:40px; margin-top:48px; padding-top:40px; border-top:1px solid var(--border); }
+.stat h3 { font-family:'Fraunces',serif; font-size:34px; font-weight:900; color:var(--accent); }
+.stat p { font-size:12px; color:var(--muted); margin-top:2px; }
+
+.hero-right {
+  background:var(--ink); position:relative;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; animation:fadeRight .8s ease both;
+}
+.hero-right::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 50%, rgba(232,82,26,.12) 0%, transparent 70%);
+}
+
+/* PREVIEW CARD HERO */
+.preview-hero {
+  width:320px; position:relative; z-index:1;
+  animation:float 4s ease-in-out infinite;
+}
+.ph-card {
+  background:white; border-radius:20px; padding:28px;
+  box-shadow:0 32px 80px rgba(0,0,0,.5);
+}
+.ph-name { font-family:'Fraunces',serif; font-size:20px; font-weight:900; color:var(--ink); margin-bottom:4px; }
+.ph-role { font-size:12px; color:var(--muted); margin-bottom:16px; }
+.ph-section { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid #e8e0d5; padding-bottom:4px; margin:14px 0 8px; }
+.ph-text { font-size:12px; color:var(--ink2); line-height:1.6; }
+.ph-skills { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.ph-skill { background:#f0ece4; padding:2px 8px; border-radius:100px; font-size:10px; font-weight:700; color:var(--ink2); }
+.ph-blur {
+  filter:blur(6px); pointer-events:none; user-select:none;
+  position:relative;
+}
+.ph-blur::after {
+  content:'🔒 Desbloqueie para ver completo';
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:800; color:var(--accent);
+  background:rgba(255,255,255,.3);
+  border-radius:8px;
+}
+.ph-lock-badge {
+  position:absolute; bottom:-16px; left:50%;
+  transform:translateX(-50%);
+  background:var(--accent); color:white;
+  padding:8px 20px; border-radius:100px;
+  font-size:12px; font-weight:800; white-space:nowrap;
+  box-shadow:0 4px 20px rgba(232,82,26,.4);
+}
+
+.float-chip {
+  position:absolute; background:var(--accent3); color:var(--ink);
+  padding:8px 14px; border-radius:12px; font-size:11px; font-weight:800;
+  z-index:2; box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+.fc1 { top:18%; left:4%; animation:float 5s ease-in-out infinite 1s; }
+.fc2 { bottom:20%; right:4%; animation:float 4.5s ease-in-out infinite .5s; background:var(--accent2); color:white; }
+
+/* ══ COMO FUNCIONA ══ */
+.section { padding:100px 64px; position:relative; z-index:1; }
+.sec-label { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+.sec-title { font-family:'Fraunces',serif; font-size:clamp(34px,4vw,52px); font-weight:900; line-height:1.1; letter-spacing:-1.5px; margin-bottom:56px; max-width:580px; }
+
+.steps { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--border); }
+.step-box { background:var(--white); padding:40px 32px; transition:background .2s; position:relative; overflow:hidden; }
+.step-box:hover { background:var(--bg2); }
+.step-num { font-family:'Fraunces',serif; font-size:64px; font-weight:900; color:var(--border); line-height:1; margin-bottom:16px; letter-spacing:-3px; }
+.step-icon { font-size:32px; margin-bottom:12px; display:block; }
+.step-box h3 { font-family:'Fraunces',serif; font-size:20px; font-weight:700; margin-bottom:8px; }
+.step-box p { color:var(--ink2); font-size:14px; line-height:1.6; }
+.step-price {
+  position:absolute; top:16px; right:16px;
+  background:var(--accent); color:white;
+  padding:4px 10px; border-radius:100px;
+  font-size:11px; font-weight:800;
+}
+
+/* ══ FORMULÁRIO ══ */
+.form-section {
+  background:var(--ink); padding:100px 64px;
+  position:relative; overflow:hidden; z-index:1;
+}
+.form-section::before {
+  content:''; position:absolute;
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(232,82,26,.07) 0%, transparent 70%);
+  top:-200px; right:-200px;
+}
+.form-section::after {
+  content:''; position:absolute;
+  width:600px; height:600px;
+  background:radial-gradient(circle, rgba(45,106,79,.08) 0%, transparent 70%);
+  bottom:-100px; left:-100px;
+}
+
+.form-wrapper { max-width:720px; margin:0 auto; position:relative; z-index:1; }
+.form-wrapper .sec-label { color:var(--accent3); }
+.form-wrapper .sec-title { color:white; margin-bottom:40px; }
+
+.progress-bar { display:flex; gap:8px; margin-bottom:40px; }
+.ps { flex:1; height:3px; background:rgba(255,255,255,.12); border-radius:2px; transition:background .4s; }
+.ps.done { background:var(--accent); }
+.ps.active { background:var(--accent3); }
+
+.form-step { display:none; animation:fadeUp .4s ease both; }
+.form-step.active { display:block; }
+
+.sh h2 { font-family:'Fraunces',serif; font-size:28px; font-weight:800; color:white; margin-bottom:6px; }
+.sh p { color:rgba(255,255,255,.45); font-size:14px; margin-bottom:28px; }
+
+.field { margin-bottom:18px; }
+label { display:block; font-size:12px; font-weight:700; color:rgba(255,255,255,.6); margin-bottom:7px; letter-spacing:.3px; }
+input, select, textarea {
+  width:100%; background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1); color:white;
+  padding:13px 16px; font-size:14px; font-family:'DM Sans',sans-serif;
+  border-radius:10px; outline:none; transition:all .2s;
+}
+input:focus, select:focus, textarea:focus { border-color:var(--accent3); background:rgba(255,255,255,.1); }
+input::placeholder, textarea::placeholder { color:rgba(255,255,255,.2); }
+select option { background:#1a1208; }
+textarea { resize:none; min-height:100px; }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+.chips { display:flex; flex-wrap:wrap; gap:8px; }
+.chip {
+  padding:7px 16px; border:1px solid rgba(255,255,255,.12);
+  border-radius:100px; font-size:12px; font-weight:600;
+  color:rgba(255,255,255,.5); cursor:pointer; transition:all .15s;
+  background:transparent; user-select:none;
+}
+.chip:hover { border-color:var(--accent3); color:var(--accent3); }
+.chip.selected { background:var(--accent); border-color:var(--accent); color:white; }
+
+.form-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; }
+.btn-back {
+  background:transparent; border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.5); padding:12px 24px; border-radius:100px;
+  font-size:14px; font-weight:600; cursor:pointer;
+  font-family:'DM Sans',sans-serif; transition:all .15s;
+}
+.btn-back:hover { border-color:rgba(255,255,255,.4); color:white; }
+.btn-next {
+  background:var(--accent); color:white; padding:13px 32px;
+  border-radius:100px; font-size:15px; font-weight:700;
+  border:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .2s; display:flex; align-items:center; gap:8px;
+}
+.btn-next:hover { background:#d4441a; transform:translateY(-1px); box-shadow:0 8px 24px rgba(232,82,26,.4); }
+
+/* ══ LOADING ══ */
+#loading-screen { display:none; text-align:center; padding:60px 0; animation:fadeUp .5s ease both; }
+.loader-ring {
+  width:72px; height:72px; border:3px solid rgba(255,255,255,.08);
+  border-top-color:var(--accent); border-radius:50%;
+  margin:0 auto 28px; animation:spin 1s linear infinite;
+}
+.loader-title { font-family:'Fraunces',serif; font-size:26px; color:white; font-weight:700; margin-bottom:8px; }
+.loader-sub { color:rgba(255,255,255,.35); font-size:13px; margin-bottom:36px; }
+.loader-items { text-align:left; display:inline-block; }
+.li {
+  display:flex; align-items:center; gap:10px;
+  color:rgba(255,255,255,.25); font-size:13px; margin-bottom:10px; transition:color .3s;
+}
+.li.done { color:var(--accent3); }
+.li.active { color:white; }
+.li-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:rgba(255,255,255,.15); flex-shrink:0; transition:background .3s;
+}
+.li.done .li-dot { background:var(--accent3); }
+.li.active .li-dot { background:white; animation:pulse 1s infinite; }
+
+/* ══ PRÉVIA BLOQUEADA ══ */
+#preview-screen { display:none; animation:fadeUp .6s ease both; }
+
+.preview-header { text-align:center; margin-bottom:40px; }
+.preview-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent2); color:white;
+  padding:7px 18px; border-radius:100px;
+  font-size:12px; font-weight:800; margin-bottom:16px;
+}
+.preview-title { font-family:'Fraunces',serif; font-size:36px; font-weight:900; color:white; margin-bottom:8px; }
+.preview-sub { color:rgba(255,255,255,.4); font-size:14px; }
+
+/* CARD PRÉVIA */
+.preview-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+
+.prev-card {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; padding:24px; position:relative; overflow:hidden;
+}
+.prev-card-full {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; padding:24px; margin-bottom:16px; position:relative; overflow:hidden;
+}
+.prev-label {
+  font-size:10px; font-weight:800; letter-spacing:2px;
+  text-transform:uppercase; color:var(--accent3); margin-bottom:14px;
+}
+
+/* CURRÍCULO PRÉVIA (parcialmente borrado) */
+.cv-real { background:white; border-radius:12px; padding:24px; color:var(--ink); font-size:12px; line-height:1.6; }
+.cv-name { font-family:'Fraunces',serif; font-size:20px; font-weight:900; margin-bottom:3px; }
+.cv-role { color:var(--muted); font-size:12px; margin-bottom:10px; }
+.cv-contact { font-size:10px; color:var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
+.cv-sec { font-weight:800; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); border-bottom:1px solid #e8e0d5; padding-bottom:4px; margin:12px 0 8px; }
+.cv-text { font-size:12px; color:var(--ink2); line-height:1.6; }
+.cv-skills { display:flex; flex-wrap:wrap; gap:4px; }
+.cv-skill { background:#f0ece4; padding:2px 8px; border-radius:100px; font-size:10px; font-weight:700; }
+
+/* BLUR OVERLAY */
+.blur-overlay {
+  position:relative; overflow:hidden;
+}
+.blur-overlay::after {
+  content:'';
+  position:absolute; inset:0;
+  backdrop-filter:blur(8px);
+  background:rgba(26,18,8,.1);
+  border-radius:8px;
+}
+
+.lock-overlay {
+  position:absolute; inset:0; z-index:10;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:8px;
+}
+.lock-icon { font-size:32px; }
+.lock-text { font-size:12px; font-weight:800; color:rgba(255,255,255,.6); text-align:center; }
+
+/* VAGAS PRÉVIA */
+.vaga-prev {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 0; border-bottom:1px solid rgba(255,255,255,.06);
+}
+.vaga-prev:last-child { border:none; }
+.vaga-emoji { font-size:20px; flex-shrink:0; }
+.vaga-info h5 { font-size:13px; font-weight:700; color:white; margin-bottom:1px; }
+.vaga-info p  { font-size:11px; color:rgba(255,255,255,.35); }
+.vaga-lock { margin-left:auto; font-size:16px; }
+
+/* LINKEDIN PRÉVIA */
+.li-tip {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:8px 0; border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:13px; color:rgba(255,255,255,.7);
+}
+.li-tip:last-child { border:none; }
+
+/* ══ BOTÃO DE PAGAMENTO ══ */
+.payment-box {
+  background:linear-gradient(135deg, rgba(232,82,26,.15), rgba(244,169,53,.1));
+  border:1px solid rgba(232,82,26,.3);
+  border-radius:20px; padding:40px; text-align:center; margin-top:24px;
+}
+.pay-title { font-family:'Fraunces',serif; font-size:32px; font-weight:900; color:white; margin-bottom:8px; }
+.pay-sub { color:rgba(255,255,255,.45); font-size:14px; margin-bottom:8px; }
+.pay-items {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:12px; margin:24px 0;
+}
+.pay-item {
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+  border-radius:12px; padding:16px 12px; text-align:center;
+}
+.pay-item-icon { font-size:24px; margin-bottom:6px; }
+.pay-item-text { font-size:11px; font-weight:700; color:rgba(255,255,255,.7); line-height:1.4; }
+
+.btn-pagar {
+  background:var(--accent); color:white;
+  padding:18px 48px; border-radius:100px;
+  font-size:18px; font-weight:900; border:none;
+  cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .2s; width:100%; margin-bottom:12px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.btn-pagar:hover { background:#d4441a; transform:translateY(-2px); box-shadow:0 12px 32px rgba(232,82,26,.5); }
+
+.pay-note { font-size:12px; color:rgba(255,255,255,.3); }
+.pay-seguro { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px; font-size:12px; color:rgba(255,255,255,.3); }
+
+/* ══ RESULTADO COMPLETO (pós-pagamento) ══ */
+#result-screen { display:none; animation:fadeUp .6s ease both; }
+
+.result-header { text-align:center; margin-bottom:40px; }
+.result-badge { display:inline-flex; align-items:center; gap:8px; background:var(--accent2); color:white; padding:8px 20px; border-radius:100px; font-size:13px; font-weight:800; margin-bottom:16px; }
+.result-title { font-family:'Fraunces',serif; font-size:40px; font-weight:900; color:white; margin-bottom:8px; }
+
+.result-full-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.result-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:24px; }
+.result-card-full { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:24px; margin-bottom:16px; }
+.rc-label { font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--accent3); margin-bottom:14px; }
+
+.cv-actions { display:flex; gap:10px; margin-top:14px; }
+.btn-cv { flex:1; padding:11px; border-radius:10px; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .2s; }
+.btn-cv.primary { background:var(--accent); color:white; }
+.btn-cv.secondary { background:rgba(255,255,255,.08); color:white; border:1px solid rgba(255,255,255,.15); }
+
+.vaga-full { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.vaga-full:last-child { border:none; }
+.vaga-full-info h5 { font-size:13px; font-weight:700; color:white; margin-bottom:2px; }
+.vaga-full-info p { font-size:11px; color:rgba(255,255,255,.4); }
+.vaga-fonte { font-size:10px; color:var(--accent3); font-weight:700; margin-top:2px; }
+.vaga-btn { margin-left:auto; font-size:11px; color:var(--accent3); text-decoration:none; border:1px solid rgba(244,169,53,.3); padding:4px 10px; border-radius:100px; white-space:nowrap; flex-shrink:0; transition:all .15s; }
+.vaga-btn:hover { background:rgba(244,169,53,.1); }
+
+.linkedin-block { background:white; border-radius:12px; padding:20px; }
+.linkedin-name { font-family:'Fraunces',serif; font-size:18px; font-weight:900; color:var(--ink); }
+.linkedin-title { font-size:13px; color:var(--ink2); margin-bottom:12px; }
+.linkedin-about { font-size:12px; color:var(--ink2); line-height:1.7; border-top:1px solid #e8e0d5; padding-top:12px; }
+.linkedin-skills-list { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; border-top:1px solid #e8e0d5; padding-top:10px; }
+.ls { background:#f0ece4; padding:3px 10px; border-radius:100px; font-size:10px; font-weight:700; color:var(--ink2); }
+
+.btn-copy-li { width:100%; padding:11px; border-radius:10px; font-size:13px; font-weight:700; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; background:rgba(255,255,255,.08); color:white; border:1px solid rgba(255,255,255,.15); margin-top:12px; transition:all .2s; }
+.btn-copy-li:hover { background:rgba(255,255,255,.15); }
+
+.entrevista-item { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.entrevista-item:last-child { border:none; }
+.ei-num { width:24px; height:24px; border-radius:50%; background:var(--accent); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+.ei-text { font-size:13px; color:rgba(255,255,255,.75); line-height:1.6; }
+
+.email-block { background:#010409; border-radius:12px; padding:20px; font-family:'DM Mono',monospace; font-size:12px; color:#8ca8c5; line-height:1.8; }
+.email-label { color:var(--accent3); }
+
+/* TUTORIAL LINKEDIN */
+.tutorial-section { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:28px; margin-bottom:16px; }
+.tutorial-title { font-family:'Fraunces',serif; font-size:22px; font-weight:800; color:white; margin-bottom:6px; }
+.tutorial-sub { font-size:13px; color:rgba(255,255,255,.4); margin-bottom:24px; }
+.tutorial-step { display:flex; gap:16px; margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid rgba(255,255,255,.06); }
+.tutorial-step:last-child { border:none; margin-bottom:0; padding-bottom:0; }
+.ts-num { width:32px; height:32px; border-radius:50%; background:rgba(232,82,26,.2); border:1px solid rgba(232,82,26,.4); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0; }
+.ts-content h4 { font-size:14px; font-weight:700; color:white; margin-bottom:4px; }
+.ts-content p { font-size:13px; color:rgba(255,255,255,.45); line-height:1.6; }
+.ts-tip { margin-top:8px; background:rgba(244,169,53,.1); border-left:2px solid var(--accent3); padding:6px 10px; font-size:12px; color:rgba(255,255,255,.6); border-radius:0 6px 6px 0; font-style:italic; }
+
+/* DEPOIMENTOS */
+.proof { padding:80px 64px; background:var(--white); position:relative; z-index:1; }
+.testimonials { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:48px; }
+.testi { background:var(--bg); padding:28px; border-radius:16px; position:relative; }
+.testi::before { content:'"'; font-family:'Fraunces',serif; font-size:72px; color:var(--accent); position:absolute; top:8px; left:20px; line-height:1; opacity:.25; }
+.testi p { font-size:14px; line-height:1.7; color:var(--ink2); margin-bottom:16px; padding-top:20px; }
+.testi-author { display:flex; align-items:center; gap:10px; }
+.ta-av { width:36px; height:36px; border-radius:50%; font-size:16px; display:flex; align-items:center; justify-content:center; }
+.ta-name { font-weight:800; font-size:13px; }
+.ta-role { font-size:11px; color:var(--muted); }
+
+/* PRICING */
+.pricing { padding:100px 64px; text-align:center; position:relative; z-index:1; }
+.price-box {
+  max-width:420px; margin:48px auto 0;
+  background:var(--ink); border:1px solid var(--accent);
+  border-radius:24px; padding:48px 40px; position:relative;
+}
+.price-hot { position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; padding:5px 16px; border-radius:100px; font-size:12px; font-weight:800; white-space:nowrap; }
+.price-name { font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:16px; }
+.price-val { font-family:'Fraunces',serif; font-size:64px; font-weight:900; color:var(--accent3); line-height:1; letter-spacing:-2px; }
+.price-per { font-size:14px; color:rgba(255,255,255,.35); margin-bottom:32px; }
+.price-list { list-style:none; margin-bottom:32px; text-align:left; }
+.price-item { display:flex; align-items:center; gap:10px; padding:8px 0; font-size:14px; color:rgba(255,255,255,.7); border-bottom:1px solid rgba(255,255,255,.07); }
+.price-item:last-child { border:none; }
+.check { color:var(--accent2); }
+.btn-price { width:100%; padding:16px; border-radius:100px; font-size:16px; font-weight:800; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; background:var(--accent); color:white; transition:all .2s; }
+.btn-price:hover { background:#d4441a; transform:translateY(-1px); }
+
+footer { background:var(--ink); color:rgba(255,255,255,.3); text-align:center; padding:32px; font-size:13px; position:relative; z-index:1; }
+footer span { color:var(--accent); }
+
+/* ANIMAÇÕES */
+@keyframes fadeLeft  { from { opacity:0; transform:translateX(-32px); } to { opacity:1; transform:translateX(0); } }
+@keyframes fadeRight { from { opacity:0; transform:translateX(32px);  } to { opacity:1; transform:translateX(0); } }
+@keyframes fadeUp    { from { opacity:0; transform:translateY(20px);   } to { opacity:1; transform:translateY(0); } }
+@keyframes float     { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+@keyframes spin      { to { transform:rotate(360deg); } }
+@keyframes pulse     { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(.7); } }
+
+@media (max-width:960px) {
+  .hero { grid-template-columns:1fr; }
+  .hero-right { display:none; }
+  .hero-left { padding:60px 28px; }
+  .section, .form-section, .proof, .pricing { padding:60px 28px; }
+  .steps { grid-template-columns:1fr 1fr; }
+  .testimonials { grid-template-columns:1fr; }
+  .preview-grid, .result-full-grid { grid-template-columns:1fr; }
+  .pay-items { grid-template-columns:1fr 1fr; }
+  .field-row { grid-template-columns:1fr; }
+  nav { padding:16px 24px; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Cabeçalho -->
-    <header>
-        <h1>Plataforma Financeira</h1>
-        <nav>
-            <a href="#">Login</a>
-            <a href="#">Cadastro</a>
-        </nav>
-    </header>
+<nav>
+  <div class="logo">Emprega<span>AI</span> ✦</div>
+  <button class="nav-cta" onclick="scrollToForm()">Criar meu currículo →</button>
+</nav>
 
-    <!-- Banner Principal -->
-    <section class="banner">
-        <h2>Receba Sinais de Compra e Venda!</h2>
-        <p>Descubra quais ações têm maior probabilidade de subir ou cair.</p>
-        <a href="#" class="botao">Assine Agora</a>
-    </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">✦ IA para primeiro emprego</div>
+    <h1>Seu <em>primeiro</em><br>emprego começa<br>aqui.</h1>
+    <p class="hero-sub">Preencha o formulário, veja uma prévia do seu currículo — e por apenas R$20 desbloqueie tudo: currículo completo, vagas reais da sua cidade, LinkedIn e muito mais.</p>
+    <button class="btn-hero" onclick="scrollToForm()">
+      ✨ Criar meu currículo grátis
+    </button>
+    <p class="hero-note">✓ Prévia grátis &nbsp;·&nbsp; ✓ Sem cadastro &nbsp;·&nbsp; ✓ 3 minutos</p>
+    <div class="hero-stats">
+      <div class="stat"><h3>R$20</h3><p>acesso completo</p></div>
+      <div class="stat"><h3>3min</h3><p>para gerar</p></div>
+      <div class="stat"><h3>2.4k</h3><p>empregos conquistados</p></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="float-chip fc1">🎯 Vagas reais da sua cidade</div>
+    <div class="float-chip fc2">✅ LinkedIn gerado pela IA</div>
+    <div class="preview-hero">
+      <div class="ph-card">
+        <div class="ph-name">Ana Clara Silva</div>
+        <div class="ph-role">Assistente Administrativa · Manaus, AM</div>
+        <div class="ph-section">Objetivo</div>
+        <div class="ph-text">Jovem proativa buscando primeira oportunidade na área administrativa...</div>
+        <div class="ph-section">Habilidades</div>
+        <div class="ph-skills">
+          <span class="ph-skill">Excel</span>
+          <span class="ph-skill">Comunicação</span>
+          <span class="ph-skill">Organização</span>
+        </div>
+        <div class="ph-section">Experiências</div>
+        <div class="ph-blur">
+          <div class="ph-text">• Auxiliar no comércio familiar desenvolvendo atendimento ao cliente e controle de estoque básico com resultados positivos...</div>
+        </div>
+      </div>
+      <div class="ph-lock-badge">🔒 Desbloqueie por R$20</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Seção de Exemplos -->
-    <section class="sinais">
-        <h3>Exemplos de Sinais Recentes</h3>
-        <ul>
-            <li>📈 PETR4 - Compra Confirmada</li>
-            <li>📉 VALE3 - Venda Confirmada</li>
-            <li>📈 ITUB4 - Compra Confirmada</li>
-        </ul>
-    </section>
+<!-- COMO FUNCIONA -->
+<section class="section">
+  <div class="sec-label">Como funciona</div>
+  <div class="sec-title">4 passos para o<br>seu primeiro emprego</div>
+  <div class="steps">
+    <div class="step-box">
+      <div class="step-num">01</div>
+      <span class="step-icon">💬</span>
+      <h3>Preencha o formulário</h3>
+      <p>Conte sobre você — área de interesse, habilidades e experiências. Não precisa ter emprego formal.</p>
+    </div>
+    <div class="step-box">
+      <div class="step-num">02</div>
+      <span class="step-icon">👀</span>
+      <h3>Veja a prévia grátis</h3>
+      <p>A IA gera seu currículo e você vê como ficou. Parte do conteúdo fica desbloqueado para você conferir.</p>
+    </div>
+    <div class="step-box">
+      <div class="step-num">03</div>
+      <span class="step-icon">🔓</span>
+      <h3>Desbloqueie tudo</h3>
+      <p>Por apenas R$20 você recebe o pacote completo via Mercado Pago — rápido e seguro.</p>
+      <div class="step-price">R$20</div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">04</div>
+      <span class="step-icon">🚀</span>
+      <h3>Candidate-se!</h3>
+      <p>Com currículo, vagas reais, LinkedIn e email prontos — é só enviar e aguardar o contato!</p>
+    </div>
+  </div>
+</section>
 
-    <!-- Rodapé -->
-    <footer>
-        <p>&copy; 2025 Minha Plataforma Financeira - Todos os direitos reservados.</p>
-    </footer>
+<!-- FORMULÁRIO -->
+<section class="form-section" id="form-section">
+  <div class="form-wrapper">
+    <div class="sec-label">Comece grátis — veja a prévia</div>
+    <div class="sec-title">Vamos montar<br>seu currículo?</div>
 
+    <div class="progress-bar" id="progress-bar">
+      <div class="ps active" id="ps-1"></div>
+      <div class="ps" id="ps-2"></div>
+      <div class="ps" id="ps-3"></div>
+      <div class="ps" id="ps-4"></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="form-step active" id="step-1">
+      <div class="sh"><h2>Sobre você 👋</h2><p>Informações básicas para começar</p></div>
+      <div class="field-row">
+        <div class="field"><label>Nome completo</label><input type="text" id="nome" placeholder="Ex: Ana Clara Silva"></div>
+        <div class="field"><label>Sua cidade e estado</label><input type="text" id="cidade" placeholder="Ex: Manaus, AM"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Email</label><input type="email" id="email" placeholder="seuemail@gmail.com"></div>
+        <div class="field"><label>WhatsApp</label><input type="text" id="telefone" placeholder="(92) 99999-9999"></div>
+      </div>
+      <div class="field"><label>Escolaridade</label>
+        <select id="escolaridade">
+          <option value="">Selecione...</option>
+          <option>Ensino médio cursando</option>
+          <option>Ensino médio completo</option>
+          <option>Técnico cursando</option>
+          <option>Técnico completo</option>
+          <option>Superior cursando</option>
+          <option>Superior completo</option>
+        </select>
+      </div>
+      <div class="form-nav"><div></div><button class="btn-next" onclick="goStep(2)">Próximo →</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="form-step" id="step-2">
+      <div class="sh"><h2>Área de interesse 🎯</h2><p>Onde você quer trabalhar?</p></div>
+      <div class="field"><label>Área desejada</label>
+        <div class="chips" id="areas">
+          <div class="chip" onclick="toggleChip(this)">💼 Administrativo</div>
+          <div class="chip" onclick="toggleChip(this)">💻 Tecnologia / TI</div>
+          <div class="chip" onclick="toggleChip(this)">📊 Finanças</div>
+          <div class="chip" onclick="toggleChip(this)">🎨 Design / Criativo</div>
+          <div class="chip" onclick="toggleChip(this)">🛒 Vendas / Comercial</div>
+          <div class="chip" onclick="toggleChip(this)">🤝 Atendimento</div>
+          <div class="chip" onclick="toggleChip(this)">📦 Logística</div>
+          <div class="chip" onclick="toggleChip(this)">🏥 Saúde</div>
+          <div class="chip" onclick="toggleChip(this)">📣 Marketing</div>
+          <div class="chip" onclick="toggleChip(this)">🔧 Técnico</div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:20px"><label>Regime preferido</label>
+        <div class="chips">
+          <div class="chip" onclick="toggleSingle(this)">🏢 Presencial</div>
+          <div class="chip" onclick="toggleSingle(this)">🏠 Remoto</div>
+          <div class="chip" onclick="toggleSingle(this)">🔀 Híbrido</div>
+          <div class="chip" onclick="toggleSingle(this)">💡 Tanto faz</div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(1)">← Voltar</button>
+        <button class="btn-next" onclick="goStep(3)">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="form-step" id="step-3">
+      <div class="sh"><h2>Suas habilidades 💪</h2><p>Selecione tudo que você sabe fazer</p></div>
+      <div class="field"><label>Habilidades</label>
+        <div class="chips" id="habilidades">
+          <div class="chip" onclick="toggleChip(this)">📝 Word / Excel</div>
+          <div class="chip" onclick="toggleChip(this)">📱 Redes sociais</div>
+          <div class="chip" onclick="toggleChip(this)">🖥️ Informática</div>
+          <div class="chip" onclick="toggleChip(this)">🗣️ Comunicação</div>
+          <div class="chip" onclick="toggleChip(this)">👥 Trabalho em equipe</div>
+          <div class="chip" onclick="toggleChip(this)">🎓 Cursos online</div>
+          <div class="chip" onclick="toggleChip(this)">🤝 Atendimento ao público</div>
+          <div class="chip" onclick="toggleChip(this)">🔧 Habilidade manual</div>
+          <div class="chip" onclick="toggleChip(this)">🌐 Inglês básico</div>
+          <div class="chip" onclick="toggleChip(this)">🚗 CNH</div>
+          <div class="chip" onclick="toggleChip(this)">🎨 Edição foto/vídeo</div>
+          <div class="chip" onclick="toggleChip(this)">📊 Organização</div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:20px">
+        <label>Atividades que já fez (mesmo sem ser emprego formal)</label>
+        <textarea id="experiencias" placeholder="Ex: ajudei no comércio da família, fiz voluntariado, cuidei de crianças, ajudei amigos com computador..."></textarea>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(2)">← Voltar</button>
+        <button class="btn-next" onclick="goStep(4)">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="form-step" id="step-4">
+      <div class="sh"><h2>Último passo! 🎉</h2><p>Isso vai personalizar seu currículo ao máximo</p></div>
+      <div class="field">
+        <label>Conte um pouco sobre você como pessoa</label>
+        <textarea id="sobre" placeholder="Ex: Sou comunicativa, gosto de aprender e sou muito dedicada..."></textarea>
+      </div>
+      <div class="field">
+        <label>Qual é o seu objetivo profissional?</label>
+        <textarea id="objetivo" placeholder="Ex: Quero trabalhar com atendimento para desenvolver minha comunicação..." style="min-height:80px"></textarea>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="goStep(3)">← Voltar</button>
+        <button class="btn-next" onclick="gerarPrevia()" id="btn-gerar">✨ Ver prévia grátis</button>
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loading-screen">
+      <div class="loader-ring"></div>
+      <div class="loader-title">A IA está trabalhando...</div>
+      <div class="loader-sub">Preparando sua prévia gratuita ☕</div>
+      <div class="loader-items">
+        <div class="li active" id="li-1"><div class="li-dot"></div>Analisando seu perfil</div>
+        <div class="li" id="li-2"><div class="li-dot"></div>Gerando currículo profissional</div>
+        <div class="li" id="li-3"><div class="li-dot"></div>Buscando vagas na sua cidade</div>
+        <div class="li" id="li-4"><div class="li-dot"></div>Montando perfil do LinkedIn</div>
+        <div class="li" id="li-5"><div class="li-dot"></div>Preparando dicas de entrevista</div>
+      </div>
+    </div>
+
+    <!-- PRÉVIA BLOQUEADA -->
+    <div id="preview-screen">
+      <div class="preview-header">
+        <div class="preview-badge">👀 Prévia gratuita</div>
+        <div class="preview-title" id="prev-title">Olha como ficou!</div>
+        <div class="preview-sub">Desbloqueie por R$20 para acessar tudo completo</div>
+      </div>
+
+      <!-- CURRÍCULO PRÉVIA -->
+      <div class="prev-card-full">
+        <div class="prev-label">📄 Seu currículo — prévia parcial</div>
+        <div class="cv-real" id="cv-preview-parcial"></div>
+        <div style="position:relative;margin-top:8px">
+          <div class="blur-overlay" id="cv-blur-section" style="border-radius:12px;overflow:hidden">
+            <div style="background:white;padding:16px;border-radius:12px;filter:blur(7px);user-select:none">
+              <div class="cv-sec">Experiências Profissionais</div>
+              <p style="font-size:12px;color:#4a3f2f;line-height:1.6">• Auxiliar no Comércio Familiar — desenvolveu habilidades de atendimento ao cliente, controle de estoque e organização do ambiente de trabalho, contribuindo diretamente para a satisfação dos clientes.<br><br>• Voluntário em Atividades Comunitárias — apoio em atividades administrativas, relacionamento interpessoal e trabalho em equipe com foco em resultados positivos para a comunidade.</p>
+              <div class="cv-sec">Perfil Pessoal</div>
+              <p style="font-size:12px;color:#4a3f2f">Pessoa comunicativa, otimista e dedicada. Valorizo ambientes positivos e tenho facilidade para aprender novas habilidades rapidamente...</p>
+            </div>
+          </div>
+          <div class="lock-overlay">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-text">Desbloqueie para ver o currículo completo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VAGAS + LINKEDIN PRÉVIA -->
+      <div class="preview-grid">
+        <div class="prev-card">
+          <div class="prev-label">💼 Vagas encontradas</div>
+          <div id="vagas-preview"></div>
+        </div>
+        <div class="prev-card">
+          <div class="prev-label">🔗 LinkedIn gerado</div>
+          <div style="position:relative">
+            <div style="filter:blur(6px);user-select:none;pointer-events:none">
+              <div style="background:white;border-radius:10px;padding:14px">
+                <div style="font-size:14px;font-weight:800;color:#1a1208" id="li-name-blur">Nome da Pessoa</div>
+                <div style="font-size:11px;color:#9a8e7e;margin-bottom:8px" id="li-title-blur">Título profissional aqui</div>
+                <div style="font-size:11px;color:#4a3f2f;line-height:1.6">Sobre: Profissional dedicado buscando primeira oportunidade no mercado de trabalho. Possui habilidades em comunicação, organização e trabalho em equipe...</div>
+              </div>
+            </div>
+            <div class="lock-overlay" style="border-radius:10px">
+              <div class="lock-icon">🔒</div>
+              <div class="lock-text">Desbloqueie para copiar o texto completo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIS PRÉVIA BORRADA -->
+      <div class="preview-grid">
+        <div class="prev-card" style="position:relative">
+          <div class="prev-label">📧 Email de candidatura</div>
+          <div style="filter:blur(6px);user-select:none;pointer-events:none;font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);line-height:1.8">
+            Assunto: Candidatura — Assistente...<br>
+            Prezado(a) recrutador(a),<br>
+            Venho por meio desta me candidatar...<br>
+            Acredito que minhas habilidades em...<br>
+            Atenciosamente, [seu nome]
+          </div>
+          <div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">Email personalizado para cada vaga</div></div>
+        </div>
+        <div class="prev-card" style="position:relative">
+          <div class="prev-label">🎯 Dicas de entrevista</div>
+          <div style="filter:blur(6px);user-select:none;pointer-events:none;font-size:13px;color:rgba(255,255,255,.5);line-height:1.8">
+            1. Para essa vaga, prepare exemplos de...<br>
+            2. O recrutador vai perguntar sobre...<br>
+            3. Destaque sua experiência com...<br>
+            4. Pesquise a empresa antes de ir...<br>
+            5. Vista-se de forma...
+          </div>
+          <div class="lock-overlay"><div class="lock-icon">🔒</div><div class="lock-text">Dicas específicas para sua vaga</div></div>
+        </div>
+      </div>
+
+      <!-- BOTÃO PAGAMENTO -->
+      <div class="payment-box">
+        <div class="pay-title">Desbloqueie tudo agora! 🚀</div>
+        <div class="pay-sub">Acesso completo por apenas</div>
+        <div style="font-family:'Fraunces',serif;font-size:56px;font-weight:900;color:var(--accent3);line-height:1;margin:8px 0">R$20</div>
+        <div style="color:rgba(255,255,255,.35);font-size:13px;margin-bottom:24px">pagamento único · acesso imediato</div>
+
+        <div class="pay-items">
+          <div class="pay-item"><div class="pay-item-icon">📄</div><div class="pay-item-text">Currículo completo em PDF</div></div>
+          <div class="pay-item"><div class="pay-item-icon">💼</div><div class="pay-item-text">Vagas reais da sua cidade</div></div>
+          <div class="pay-item"><div class="pay-item-icon">🔗</div><div class="pay-item-text">Perfil LinkedIn completo</div></div>
+          <div class="pay-item"><div class="pay-item-icon">📧</div><div class="pay-item-text">Email de candidatura pronto</div></div>
+          <div class="pay-item"><div class="pay-item-icon">🎯</div><div class="pay-item-text">Dicas de entrevista</div></div>
+          <div class="pay-item"><div class="pay-item-icon">📱</div><div class="pay-item-text">Tutorial LinkedIn do zero</div></div>
+        </div>
+
+        <button class="btn-pagar" onclick="processarPagamento()">
+          🔓 Desbloquear por R$20 — Mercado Pago
+        </button>
+        <div class="pay-seguro">🔒 Pagamento 100% seguro · Mercado Pago</div>
+        <div class="pay-note" style="margin-top:8px">Acesso liberado imediatamente após confirmação</div>
+      </div>
+    </div>
+
+    <!-- RESULTADO COMPLETO -->
+    <div id="result-screen">
+      <div class="result-header">
+        <div class="result-badge">🎉 Acesso liberado!</div>
+        <div class="result-title" id="result-title">Tudo pronto para você!</div>
+        <div style="color:rgba(255,255,255,.4);font-size:14px">Aqui está seu pacote completo de emprego</div>
+      </div>
+
+      <!-- CURRÍCULO COMPLETO -->
+      <div class="result-card-full">
+        <div class="rc-label">📄 Seu currículo profissional completo</div>
+        <div class="cv-real" id="cv-completo"></div>
+        <div class="cv-actions">
+          <button class="btn-cv primary" onclick="imprimirCV()">🖨️ Salvar PDF</button>
+          <button class="btn-cv secondary" onclick="copiarCV()">📋 Copiar texto</button>
+        </div>
+      </div>
+
+      <!-- VAGAS REAIS -->
+      <div class="result-card-full">
+        <div class="rc-label">💼 Vagas reais na sua cidade</div>
+        <div style="background:rgba(45,106,79,.15);border:1px solid rgba(45,106,79,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(255,255,255,.55);margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          🏛️ Vagas encontradas no Brasil — Emprega Brasil + Indeed
+        </div>
+        <div id="vagas-completo"></div>
+      </div>
+
+      <div class="result-full-grid">
+        <!-- LINKEDIN COMPLETO -->
+        <div class="result-card">
+          <div class="rc-label">🔗 Seu perfil LinkedIn</div>
+          <div class="linkedin-block" id="linkedin-block"></div>
+          <button class="btn-copy-li" onclick="copiarLinkedin()">📋 Copiar texto para o LinkedIn</button>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="result-card">
+          <div class="rc-label">📧 Email de candidatura</div>
+          <div class="email-block" id="email-block"></div>
+          <button class="btn-copy-li" onclick="copiarEmail()" style="margin-top:12px">📋 Copiar email</button>
+        </div>
+      </div>
+
+      <!-- ENTREVISTA -->
+      <div class="result-card-full">
+        <div class="rc-label">🎯 Dicas personalizadas de entrevista</div>
+        <div id="entrevista-block"></div>
+      </div>
+
+      <!-- TUTORIAL LINKEDIN -->
+      <div class="tutorial-section">
+        <div class="tutorial-title">📱 Como criar seu LinkedIn do zero</div>
+        <div class="tutorial-sub">Passo a passo simples — LinkedIn não é complicado, é só uma rede social profissional!</div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">1</div>
+          <div class="ts-content">
+            <h4>Acesse linkedin.com e crie sua conta</h4>
+            <p>Clique em "Cadastre-se", coloque seu nome, email e senha. É grátis e leva 2 minutos.</p>
+            <div class="ts-tip">💡 Use o mesmo email que colocou no currículo para ficar tudo organizado.</div>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">2</div>
+          <div class="ts-content">
+            <h4>Adicione uma foto profissional</h4>
+            <p>Não precisa ser de fotógrafo. Uma foto com boa iluminação, camisa arrumada e fundo neutro já funciona. Perfis com foto recebem 14x mais visualizações!</p>
+            <div class="ts-tip">💡 Tire a foto perto de uma janela durante o dia — a luz natural é sua melhor aliada.</div>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">3</div>
+          <div class="ts-content">
+            <h4>Preencha o título profissional</h4>
+            <p>É a frase que aparece embaixo do seu nome. Copie o texto que geramos para você acima e cole aqui.</p>
+            <div class="ts-tip">💡 Exemplo: "Estudante de Ensino Médio | Buscando primeiro emprego em Administrativo | Manaus, AM"</div>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">4</div>
+          <div class="ts-content">
+            <h4>Cole o texto "Sobre" gerado pela IA</h4>
+            <p>Na seção "Sobre" do LinkedIn, cole o texto que geramos para você. Ele foi feito para chamar atenção de recrutadores.</p>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">5</div>
+          <div class="ts-content">
+            <h4>Adicione suas experiências e habilidades</h4>
+            <p>Copie do seu currículo as experiências e habilidades e adicione nas seções correspondentes do LinkedIn.</p>
+            <div class="ts-tip">💡 Na seção "Habilidades" coloque pelo menos 5 — isso aumenta muito sua visibilidade nas buscas dos recrutadores.</div>
+          </div>
+        </div>
+
+        <div class="tutorial-step">
+          <div class="ts-num">6</div>
+          <div class="ts-content">
+            <h4>Siga empresas da sua área em Manaus</h4>
+            <p>Pesquise empresas da sua área na sua cidade, siga o perfil delas e ative notificações de vagas. Muitas empresas postam vagas só no LinkedIn antes de ir para outros sites.</p>
+            <div class="ts-tip">💡 LinkedIn não é rede social de elite — é onde 9 de cada 10 recrutadores brasileiros procuram candidatos hoje.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- fim result-screen -->
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="proof">
+  <div class="sec-label">Histórias reais</div>
+  <div class="sec-title">Quem usou o EmpregaAI</div>
+  <div class="testimonials">
+    <div class="testi">
+      <p>Nunca trabalhei e não sabia o que colocar no currículo. Em 3 minutos a IA montou tudo e ainda apareceram vagas aqui de Manaus. Na semana seguinte já tava em entrevista!</p>
+      <div class="testi-author">
+        <div class="ta-av" style="background:#fde8d8">👦</div>
+        <div><div class="ta-name">Lucas M., 18 anos</div><div class="ta-role">Auxiliar de escritório · Manaus, AM</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p>Os R$20 foram o melhor investimento que fiz. Recebi currículo, LinkedIn pronto pra copiar, vagas reais e ainda dicas de como me sair na entrevista. Fui chamada em 3 empresas!</p>
+      <div class="testi-author">
+        <div class="ta-av" style="background:#e8f5e9">👩</div>
+        <div><div class="ta-name">Letícia F., 20 anos</div><div class="ta-role">Atendente · Manaus, AM</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p>Achava que LinkedIn era coisa de gente formada. O tutorial do EmpregaAI me mostrou que qualquer um pode usar. Hoje tenho perfil completo e já recebi mensagem de recrutador!</p>
+      <div class="testi-author">
+        <div class="ta-av" style="background:#e8f0fe">👦</div>
+        <div><div class="ta-name">Gabriel R., 17 anos</div><div class="ta-role">Jovem aprendiz · Manaus, AM</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing-section">
+  <div class="sec-label">Investimento</div>
+  <div class="sec-title" style="margin:0 auto;text-align:center">Um preço justo<br>para mudar sua vida</div>
+  <div class="price-box">
+    <div class="price-hot">🔥 PACOTE COMPLETO</div>
+    <div class="price-name">Acesso único</div>
+    <div class="price-val">R$20</div>
+    <div class="price-per">pagamento único · sem mensalidade</div>
+    <ul class="price-list">
+      <li class="price-item"><span class="check">✓</span> Currículo profissional em PDF</li>
+      <li class="price-item"><span class="check">✓</span> Vagas reais da sua cidade</li>
+      <li class="price-item"><span class="check">✓</span> Perfil LinkedIn completo gerado</li>
+      <li class="price-item"><span class="check">✓</span> Email de candidatura pronto</li>
+      <li class="price-item"><span class="check">✓</span> Dicas personalizadas de entrevista</li>
+      <li class="price-item"><span class="check">✓</span> Tutorial LinkedIn do zero</li>
+    </ul>
+    <button class="btn-price" onclick="scrollToForm()">Começar agora →</button>
+  </div>
+</section>
+
+<footer>
+  <p>Feito com ❤️ e <span>IA</span> para quem está começando · EmpregaAI © 2025</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// ESTADO GLOBAL
+// ══════════════════════════════════════════
+let dadosGerados = null;
+let currentStep  = 1;
+
+function scrollToForm()    { document.getElementById('form-section').scrollIntoView({ behavior:'smooth' }); }
+function scrollToPricing() { document.getElementById('pricing-section').scrollIntoView({ behavior:'smooth' }); }
+
+// ══════════════════════════════════════════
+// NAVEGAÇÃO STEPS
+// ══════════════════════════════════════════
+function goStep(step) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('step-' + step).classList.add('active');
+  for (let i = 1; i <= 4; i++) {
+    const ps = document.getElementById('ps-' + i);
+    if (i < step)       ps.className = 'ps done';
+    else if (i === step) ps.className = 'ps active';
+    else                 ps.className = 'ps';
+  }
+  currentStep = step;
+  scrollToForm();
+}
+
+function toggleChip(el)   { el.classList.toggle('selected'); }
+function toggleSingle(el) {
+  el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ══════════════════════════════════════════
+// COLETA DE DADOS
+// ══════════════════════════════════════════
+function getDados() {
+  return {
+    nome:         document.getElementById('nome').value        || 'Candidato',
+    cidade:       document.getElementById('cidade').value      || 'Manaus, AM',
+    email:        document.getElementById('email').value       || 'email@email.com',
+    telefone:     document.getElementById('telefone').value    || '(92) 99999-9999',
+    escolaridade: document.getElementById('escolaridade').value|| 'Ensino médio completo',
+    areas:        [...document.querySelectorAll('#areas .chip.selected')].map(c=>c.textContent.trim()).join(', ') || 'Administrativo',
+    habilidades:  [...document.querySelectorAll('#habilidades .chip.selected')].map(c=>c.textContent.trim()).join(', ') || 'Comunicação, Organização',
+    experiencias: document.getElementById('experiencias').value|| 'Sem experiência formal prévia',
+    sobre:        document.getElementById('sobre').value       || 'Pessoa dedicada e comprometida',
+    objetivo:     document.getElementById('objetivo').value    || 'Iniciar minha carreira profissional'
+  };
+}
+
+// ══════════════════════════════════════════
+// LOADER
+// ══════════════════════════════════════════
+function animarLoader() {
+  const ids = ['li-1','li-2','li-3','li-4','li-5'];
+  let i = 0;
+  const iv = setInterval(() => {
+    if (i > 0) document.getElementById(ids[i-1]).className = 'li done';
+    if (i < ids.length) { document.getElementById(ids[i]).className = 'li active'; i++; }
+    else clearInterval(iv);
+  }, 1400);
+}
+
+// ══════════════════════════════════════════
+// GERAR PRÉVIA (chama backend)
+// ══════════════════════════════════════════
+async function gerarPrevia() {
+  const dados = getDados();
+  document.getElementById('btn-gerar').disabled = true;
+  document.getElementById('step-4').classList.remove('active');
+  document.getElementById('progress-bar').style.display = 'none';
+  document.getElementById('loading-screen').style.display = 'block';
+  scrollToForm();
+  animarLoader();
+
+  try {
+    const resp = await fetch('/api/gerar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...dados, modo: 'completo' })
+    });
+    const resultado = await resp.json();
+    dadosGerados = resultado;
+    await new Promise(r => setTimeout(r, 800));
+    mostrarPrevia(dados, resultado);
+  } catch(err) {
+    await new Promise(r => setTimeout(r, 2000));
+    dadosGerados = fallbackLocal(dados);
+    mostrarPrevia(dados, dadosGerados);
+  }
+}
+
+// ══════════════════════════════════════════
+// MOSTRAR PRÉVIA BLOQUEADA
+// ══════════════════════════════════════════
+function mostrarPrevia(dados, resultado) {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('preview-screen').style.display = 'block';
+
+  const nome = dados.nome.split(' ')[0];
+  document.getElementById('prev-title').textContent = `Olha como ficou, ${nome}! 👀`;
+  document.getElementById('li-name-blur').textContent = dados.nome;
+  document.getElementById('li-title-blur').textContent = `${dados.areas.split(',')[0].trim()} | Buscando primeiro emprego`;
+
+  // Currículo parcial (apenas cabeçalho + objetivo)
+  const cvEl = document.getElementById('cv-preview-parcial');
+  cvEl.innerHTML = `
+    <div class="cv-name">${dados.nome}</div>
+    <div class="cv-role">${dados.areas.split(',')[0].trim()} · Primeiro emprego</div>
+    <div class="cv-contact">
+      <span>📍 ${dados.cidade}</span>
+      <span>📧 ${dados.email}</span>
+      <span>📱 ${dados.telefone}</span>
+    </div>
+    <div class="cv-sec">Objetivo Profissional</div>
+    <div class="cv-text">${dados.objetivo || 'Busco minha primeira oportunidade profissional...'}</div>
+    <div class="cv-sec">Habilidades</div>
+    <div class="cv-skills">${dados.habilidades.split(',').slice(0,4).map(h=>`<span class="cv-skill">${h.trim()}</span>`).join('')}</div>`;
+
+  // Vagas — mostra 2 com link bloqueado
+  const vagasEl = document.getElementById('vagas-preview');
+  const emojis = ['🏢','🏭','🏬','🏥'];
+  const vagas3 = (resultado.vagas || []).slice(0,3);
+  vagasEl.innerHTML = vagas3.map((v,i) => `
+    <div class="vaga-prev">
+      <div class="vaga-emoji">${emojis[i%emojis.length]}</div>
+      <div class="vaga-info">
+        <h5>${v.cargo}</h5>
+        <p>${v.empresa} · ${v.cidade}</p>
+      </div>
+      <div class="vaga-lock">${i === 0 ? '🔒' : '🔒'}</div>
+    </div>`).join('');
+
+  scrollToForm();
+}
+
+// ══════════════════════════════════════════
+// PROCESSAR PAGAMENTO (Mercado Pago)
+// ══════════════════════════════════════════
+function processarPagamento() {
+  // SUBSTITUA PELA SUA URL DO MERCADO PAGO
+  const urlPagamento = 'https://mpago.la/SEU-LINK-AQUI';
+
+  // Por enquanto abre em nova aba e simula liberação
+  // Em produção: integrar webhook do MP para liberar automaticamente
+  const confirmou = confirm(
+    '🔓 Você será redirecionado para o Mercado Pago para pagar R$20.\n\n' +
+    'Após o pagamento, clique em OK para liberar seu acesso.'
+  );
+
+  if (confirmou) {
+    // Em produção isso seria validado via webhook
+    liberarAcesso();
+  }
+}
+
+// ══════════════════════════════════════════
+// LIBERAR ACESSO COMPLETO
+// ══════════════════════════════════════════
+function liberarAcesso() {
+  const dados = getDados();
+  const resultado = dadosGerados || fallbackLocal(dados);
+
+  document.getElementById('preview-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display  = 'block';
+
+  const nome = dados.nome.split(' ')[0];
+  document.getElementById('result-title').textContent = `Tudo liberado, ${nome}! 🎉`;
+
+  // Currículo completo
+  document.getElementById('cv-completo').innerHTML = resultado.cv_html || '';
+
+  // Vagas completas com links
+  const vagasEl = document.getElementById('vagas-completo');
+  const emojis  = ['🏢','🏭','🏬','🏥','🏦'];
+  vagasEl.innerHTML = (resultado.vagas || []).map((v,i) => `
+    <div class="vaga-full">
+      <div style="font-size:22px;flex-shrink:0">${emojis[i%emojis.length]}</div>
+      <div class="vaga-full-info">
+        <h5>${v.cargo}</h5>
+        <p>${v.empresa} · ${v.cidade} · ${v.salario || 'A combinar'}</p>
+        <div class="vaga-fonte">📌 ${v.fonte || 'Emprega Brasil'}</div>
+      </div>
+      <a href="${v.link}" target="_blank" class="vaga-btn">Ver vaga →</a>
+    </div>`).join('');
+
+  // LinkedIn completo
+  const li = resultado.linkedin || {};
+  document.getElementById('linkedin-block').innerHTML = `
+    <div class="linkedin-name">${dados.nome}</div>
+    <div class="linkedin-title">${li.titulo || dados.areas.split(',')[0].trim() + ' | Buscando primeiro emprego | ' + dados.cidade}</div>
+    <div class="linkedin-about">${li.sobre || dados.sobre}</div>
+    <div class="linkedin-skills-list">${dados.habilidades.split(',').map(h=>`<span class="ls">${h.trim()}</span>`).join('')}</div>`;
+
+  // Email
+  const area = dados.areas.split(',')[0].trim();
+  document.getElementById('email-block').innerHTML =
+    `<span class="email-label">Assunto:</span> Candidatura — ${area} — ${dados.nome}\n\n` +
+    `Prezado(a) recrutador(a),\n\n` +
+    (resultado.email_candidatura || `Venho por meio desta me candidatar à vaga de ${area}. Sou ${dados.sobre?.substring(0,80) || 'uma pessoa dedicada e proativa'}.\n\nAcredito que minhas habilidades em ${dados.habilidades.split(',').slice(0,3).join(', ')} podem contribuir positivamente com a equipe.\n\nAgradeço a atenção e fico à disposição.\n\nAtenciosamente,\n${dados.nome}\n${dados.telefone}`);
+
+  // Dicas de entrevista
+  const dicas = resultado.dicas_entrevista || [
+    `Para a vaga de ${area}, prepare exemplos concretos de situações onde você demonstrou organização`,
+    'Chegue 10 minutos antes — pontualidade impressiona muito os recrutadores',
+    'Pesquise a empresa antes: site, redes sociais, o que fazem. Isso mostra interesse real',
+    'Prepare uma resposta para "fale sobre você" — conta quem você é, suas habilidades e o que busca',
+    'No final da entrevista, pergunte sobre os próximos passos do processo seletivo'
+  ];
+  document.getElementById('entrevista-block').innerHTML = dicas.map((d,i) => `
+    <div class="entrevista-item">
+      <div class="ei-num">${i+1}</div>
+      <div class="ei-text">${d}</div>
+    </div>`).join('');
+
+  scrollToForm();
+}
+
+// ══════════════════════════════════════════
+// FALLBACK LOCAL
+// ══════════════════════════════════════════
+function fallbackLocal(d) {
+  const area   = d.areas.split(',')[0].replace(/[^\w\s]/g,'').trim();
+  const cidade = d.cidade.split(',')[0].trim();
+  return {
+    cv_html: `
+      <div class="cv-name">${d.nome}</div>
+      <div class="cv-role">${area} · Candidatura ao primeiro emprego</div>
+      <div class="cv-contact"><span>📍 ${d.cidade}</span><span>📧 ${d.email}</span><span>📱 ${d.telefone}</span></div>
+      <div class="cv-sec">Objetivo</div>
+      <div class="cv-text">${d.objetivo}</div>
+      <div class="cv-sec">Formação</div>
+      <div class="cv-text"><strong>${d.escolaridade}</strong></div>
+      <div class="cv-sec">Habilidades</div>
+      <div class="cv-skills">${d.habilidades.split(',').map(h=>`<span class="cv-skill">${h.trim()}</span>`).join('')}</div>
+      <div class="cv-sec">Experiências</div>
+      <div class="cv-text">${d.experiencias}</div>
+      <div class="cv-sec">Sobre mim</div>
+      <div class="cv-text">${d.sobre}</div>`,
+    vagas: [
+      { cargo:`Assistente de ${area}`, empresa:'SINE Amazonas', cidade, salario:'A combinar', link:'https://empregabrasil.mte.gov.br', fonte:'Emprega Brasil' },
+      { cargo:'Jovem Aprendiz', empresa:'Programa Federal', cidade, salario:'Salário mínimo', link:'https://empregabrasil.mte.gov.br', fonte:'Emprega Brasil' },
+      { cargo:`Auxiliar ${area}`, empresa:'Vagas disponíveis', cidade, salario:'A combinar', link:`https://br.indeed.com/jobs?q=${encodeURIComponent(area)}&l=${encodeURIComponent(cidade)}`, fonte:'Indeed Brasil' },
+      { cargo:'Atendente', empresa:'Empresas locais', cidade, salario:'A combinar', link:`https://www.gupy.io/jobs?q=${encodeURIComponent(area)}`, fonte:'Gupy' },
+    ],
+    linkedin: {
+      titulo: `${area} | Buscando primeiro emprego | ${d.cidade}`,
+      sobre: `${d.sobre} Busco minha primeira oportunidade na área de ${area} para aplicar minhas habilidades e crescer profissionalmente.`
+    },
+    dicas_entrevista: [
+      `Para a vaga de ${area}, prepare exemplos de situações onde você demonstrou ${d.habilidades.split(',')[0]?.trim() || 'organização'}`,
+      'Chegue 10 minutos antes — pontualidade impressiona muito recrutadores',
+      'Pesquise a empresa antes: site, redes sociais, o que fazem',
+      `Prepare uma resposta para "fale sobre você" baseada no seu objetivo: ${d.objetivo?.substring(0,60)}...`,
+      'No final, pergunte sobre os próximos passos do processo seletivo'
+    ]
+  };
+}
+
+// ══════════════════════════════════════════
+// AÇÕES
+// ══════════════════════════════════════════
+function imprimirCV() {
+  const conteudo = document.getElementById('cv-completo').innerHTML;
+  const win = window.open('','_blank');
+  win.document.write(`<html><head><title>Currículo — EmpregaAI</title>
+  <style>body{font-family:Arial,sans-serif;padding:40px;color:#1a1208}.cv-name{font-size:26px;font-weight:900;margin-bottom:4px}.cv-role{color:#9a8e7e;font-size:13px;margin-bottom:10px}.cv-contact{font-size:11px;color:#9a8e7e;display:flex;gap:16px;flex-wrap:wrap}.cv-sec{font-weight:800;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#e8521a;border-bottom:1px solid #e0d9d0;padding-bottom:4px;margin:14px 0 8px}.cv-text{font-size:13px;color:#4a3f2f;line-height:1.6}.cv-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.cv-skill{background:#f0ece4;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}@media print{body{padding:20px}}</style>
+  </head><body>${conteudo}</body></html>`);
+  win.document.close();
+  setTimeout(()=>win.print(), 500);
+}
+
+function copiarCV() {
+  const texto = document.getElementById('cv-completo').innerText;
+  navigator.clipboard.writeText(texto).then(()=>alert('✅ Currículo copiado! Cole no Word ou Google Docs.'));
+}
+
+function copiarLinkedin() {
+  const el = document.getElementById('linkedin-block');
+  navigator.clipboard.writeText(el.innerText).then(()=>alert('✅ Texto do LinkedIn copiado! Agora cole no seu perfil.'));
+}
+
+function copiarEmail() {
+  const el = document.getElementById('email-block');
+  navigator.clipboard.writeText(el.innerText).then(()=>alert('✅ Email copiado! Agora cole no seu email e envie para a empresa.'));
+}
+</script>
 </body>
 </html>
